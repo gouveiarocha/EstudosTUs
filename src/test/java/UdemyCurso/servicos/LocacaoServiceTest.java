@@ -11,7 +11,9 @@ import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class LocacaoServiceTest {
 
@@ -71,12 +73,12 @@ public class LocacaoServiceTest {
         //cenário
         //LocacaoService service = new LocacaoService(); -> transformado em variavel global e iniciado no before
         Usuario usuario = new Usuario("Usuário 1");
-        Filme filme = new Filme("Filme 1", 2, 5.00);
+        List<Filme> filmes = Arrays.asList(new Filme( "Filme 1", 2, 5.00));
 
         //System.out.println("Teste");
 
         //ação
-        Locacao locacao = service.alugarFilme(usuario, filme);
+        Locacao locacao = service.alugarFilmes(usuario, filmes);
 
         //verificação
         Assert.assertEquals(5.00, locacao.getValor(), 0.01);
@@ -107,10 +109,10 @@ public class LocacaoServiceTest {
 
         //cenário
         Usuario usuario = new Usuario("Usuário 1");
-        Filme filme = new Filme("Filme 1", 0, 5.00);
+        List<Filme> filmes = Arrays.asList(new Filme( "Filme 1", 0, 5.00));
 
         //ação
-        service.alugarFilme(usuario, filme);
+        service.alugarFilmes(usuario, filmes);
 
     }
 
@@ -154,12 +156,12 @@ public class LocacaoServiceTest {
 
         //cenário
         service = new LocacaoService();
-        Filme filme = new Filme("Filme 1", 2, 5.00);
+        List<Filme> filmes = Arrays.asList(new Filme( "Filme 1", 2, 5.00));
 
         //ação
 
         try {
-            service.alugarFilme(null, filme);
+            service.alugarFilmes(null, filmes);
         } catch (LocadoraException e) {
             Assert.assertThat(e.getMessage(), CoreMatchers.is("Usuario NULL"));
         }
@@ -178,7 +180,7 @@ public class LocacaoServiceTest {
         exception.expectMessage("Filme NULL");
 
         //ação
-        service.alugarFilme(usuario, null);
+        service.alugarFilmes(usuario, null);
 
         System.out.println("Forma nova..."); //na forma nova, essa linha não sera executada pois o teste falhou antes e não chegou aqui.
 

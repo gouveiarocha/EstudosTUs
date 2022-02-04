@@ -1,11 +1,12 @@
 package UdemyCurso.entidades;
 
 import java.util.Date;
+import java.util.List;
 
 public class Locacao {
 
 	private Usuario usuario;
-	private Filme filme;
+	private List<Filme> listaFilmes;
 	private Date dataLocacao;
 	private Date dataRetorno;
 	private Double valor;
@@ -34,10 +35,10 @@ public class Locacao {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	public Filme getFilme() {
-		return filme;
+	public List<Filme> getListaFilmes() {
+		return listaFilmes;
 	}
-	public void setFilme(Filme filme) {
-		this.filme = filme;
+	public void setListaFilmes(List<Filme> listaFilmes) {
+		this.listaFilmes = listaFilmes;
 	}
 }
