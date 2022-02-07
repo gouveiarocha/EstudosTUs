@@ -26,7 +26,6 @@ public class LocacaoServiceTest {
     //com a variavel definida como estatica, vamos resolver o problema acima e conseguir contar os testes.
     private static int staticCount = 1;
 
-
     /**
      * Rules - servem para modificar comportamentos do teste
      */

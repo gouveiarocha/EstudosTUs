@@ -50,10 +50,6 @@ public class Asserts {
         Assert.assertThat(5, is(equalTo(5)));
         Assert.assertThat(5, is((not(10))));
 
-
-
-
-
     }
 
 }
