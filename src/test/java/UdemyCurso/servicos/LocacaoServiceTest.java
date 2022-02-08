@@ -12,6 +12,7 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -240,6 +241,18 @@ public class LocacaoServiceTest {
         Locacao resultado = service.alugarFilmes(usuario, filmes);
 
         Assert.assertThat(resultado.getValor(), CoreMatchers.is(14.0));
+
+    }
+
+    @Test
+    public void naoDeveDevolverFilmeNoDomingo() throws FilmeSemEstoqueException, LocadoraException {
+
+        Usuario usuario = new Usuario("Usuário 1");
+        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 4.00));
+
+        Locacao retorno = service.alugarFilmes(usuario, filmes);
+
+        Assert.assertTrue(DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY));
 
     }
 
