@@ -72,6 +72,8 @@ public class LocacaoServiceTest {
     @Test
     public void deveAlugarFilme() throws Exception {
 
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
         //CENÁRIO
         //LocacaoService service = new LocacaoService(); -> transformado em variavel global e iniciado no before
         Usuario usuario = new Usuario("Usuário 1");
@@ -246,6 +248,9 @@ public class LocacaoServiceTest {
 
     @Test
     public void naoDeveDevolverFilmeNoDomingo() throws FilmeSemEstoqueException, LocadoraException {
+
+        //O Assume vai garantir que o dia é domingo, caso contrário vai dar erro no teste quando o dia não for domingo. Muito bom!!!
+        Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.MONDAY));
 
         Usuario usuario = new Usuario("Usuário 1");
         List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 4.00));
