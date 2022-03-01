@@ -5,18 +5,18 @@ import UdemyCurso.entidades.Locacao;
 import UdemyCurso.entidades.Usuario;
 import UdemyCurso.exceptions.FilmeSemEstoqueException;
 import UdemyCurso.exceptions.LocadoraException;
-import UdemyCurso.matchers.DiaSemanaMatcher;
 import UdemyCurso.matchers.MatchersProprios;
 import UdemyCurso.utils.DataUtils;
-import org.hamcrest.CoreMatchers;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import static UdemyCurso.matchers.MatchersProprios.*;
+import static org.hamcrest.CoreMatchers.*;
 
 public class LocacaoServiceTest {
 
@@ -85,26 +85,21 @@ public class LocacaoServiceTest {
         Locacao locacao = service.alugarFilmes(usuario, filmes);
 
         //VERIFICAÇÃO
-        Assert.assertEquals(5.00, locacao.getValor(), 0.01);
-        Assert.assertThat(
-                DataUtils.dataAtual(locacao.getDataLocacao(),
-                        new Date()),
-                CoreMatchers.is(true));
-        Assert.assertThat(
-                DataUtils.dataAtual(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)),
-                CoreMatchers.is(true));
 
-        //verificando usando o ErrorCollector - aqui, caso ocorra erro, ele vai coletar o erro e
-        //continuar os demais testes
-        //error.checkThat(locacao.getValor(), CoreMatchers.is(5));
-        //error.checkThat(
-        //        DataUtils.dataAtual(locacao.getDataLocacao(),
-        //                new Date()),
-        //        CoreMatchers.is(false));
-        //error.checkThat(
-        //        DataUtils.dataAtual(locacao.getDataRetorno(),
-        //                DataUtils.obterDataComDiferencaDias(1)),
-        //        CoreMatchers.is(false));
+        // 1º Opção.
+        //Assert.assertEquals(5.00, locacao.getValor(), 0.01);
+        //Assert.assertThat(DataUtils.dataAtual(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
+        //Assert.assertThat(DataUtils.dataAtual(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), CoreMatchers.is(true));
+
+        // 2º Opção, usando ErrorCollector - aqui, caso ocorra erro, ele vai coletar o erro e continuar os demais testes
+        //error.checkThat(locacao.getValor(), is(5.00));
+        //error.checkThat(DataUtils.dataAtual(locacao.getDataLocacao(), new Date()), is(true));
+        //error.checkThat(DataUtils.dataAtual(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
+
+        // 3º Opção, usando CoresMacthers proprios. Mais Legível.
+        error.checkThat(locacao.getValor(), is(equalTo(5.0)));
+        error.checkThat(locacao.getDataLocacao(), isHoje());
+        error.checkThat(locacao.getDataRetorno(), isHojeComDifDias(1));
 
     }
 
@@ -162,7 +157,7 @@ public class LocacaoServiceTest {
         try {
             service.alugarFilmes(null, filmes);
         } catch (LocadoraException e) {
-            Assert.assertThat(e.getMessage(), CoreMatchers.is("Usuario NULL"));
+            Assert.assertThat(e.getMessage(), is("Usuario NULL"));
         }
 
         //System.out.println("Forma robusta..."); //na forma robusta, essa linha será executada, pois a falha esta sendfo tratada de forma independente no try
@@ -268,7 +263,7 @@ public class LocacaoServiceTest {
 //        Assert.assertTrue(ehSegunda);
         //usando Matchers Proprios.
         //Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiEm(Calendar.MONDAY));
-        Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiNumaSegunda()); //melhor forma.
+        Assert.assertThat(retorno.getDataRetorno(), caiNumaSegunda()); //melhor forma.
 
     }
 
